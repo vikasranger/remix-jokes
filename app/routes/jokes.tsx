@@ -44,7 +44,6 @@ export default function JokesRoute()
   const data = useLoaderData<typeof loader>();
   const params = useParams();
   const navigation = useNavigate();
-  console.log("data", data);
 
   useEffect(() =>
   {
