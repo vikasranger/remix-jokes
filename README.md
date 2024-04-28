@@ -28,7 +28,7 @@ npm install -g prisma
 
 npx prisma generate
 ```
-### Do this
+### Now run this
 
 ```sh
 npm install
