@@ -18,8 +18,6 @@ export const loader = async({
     throw new Response("No user loggedIn", {status: 404});
   }
 
-  // In the official deployed version of the app, we don't want to deploy
-  // a site with none-moderated content, so we only show users their own jokes
   const count = await db.joke.count({where: {jokesterId: userId}});
   const randomRowNumber = Math.floor(Math.random() * count);
 
@@ -32,7 +30,7 @@ export const loader = async({
   {
     if(userId !== logInUserId)
     {
-      throw new Response("No user loggedIn", {status: 401});
+      throw new Response("Add not allowed", {status: 401});
     }
     else
     {
