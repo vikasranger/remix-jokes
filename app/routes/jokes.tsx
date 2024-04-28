@@ -1,34 +1,62 @@
-import type { LinksFunction, LoaderArgs } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Form, Link, Outlet, useLoaderData } from "@remix-run/react";
+import type {LinksFunction, LoaderArgs} from "@remix-run/node";
+import {json} from "@remix-run/node";
+import {useParams} from "@remix-run/react";
+import {useNavigate} from "@remix-run/react";
+import {Form, Link, Outlet, useLoaderData} from "@remix-run/react";
+import {useEffect} from "react";
+import {useState} from "react";
 
 import stylesUrl from "~/styles/jokes.css";
-import { db } from "~/utils/db.server";
-import { getUser } from "~/utils/session.server";
+import {db} from "~/utils/db.server";
+import {getUser} from "~/utils/session.server";
 
 export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesUrl },
+  {
+    rel: "stylesheet",
+    href: stylesUrl
+  }
 ];
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async({
+  request
+}: LoaderArgs) =>
+{
   const user = await getUser(request);
+  const users = await db.user.findMany();
 
-  // In the official deployed version of the app, we don't want to deploy
-  // a site with none-moderated content, so we only show users their own jokes
   const jokeListItems = user
     ? await db.joke.findMany({
-        orderBy: { createdAt: "desc" },
-        select: { id: true, name: true },
-        take: 5,
-        where: { jokesterId: user.id },
-      })
+      orderBy: {createdAt: "desc"},
+      select: {
+        id: true,
+        name: true
+      },
+      where: {jokesterId: user.id}
+    })
     : [];
 
-  return json({ jokeListItems, user });
+  return json({
+    jokeListItems,
+    user,
+    users
+  });
 };
-
-export default function JokesRoute() {
+      
+export default function JokesRoute()
+{
   const data = useLoaderData<typeof loader>();
+  const params = useParams();
+  const navigation = useNavigate();
+  console.log("data", data);
+
+  useEffect(() =>
+  {
+    const userId = data.user?.id;
+    if(!params.jokeId && userId)
+    {
+      navigation(userId);
+    }
+  }, [data.user?.id]);
 
   return (
     <div className="jokes-layout">
@@ -43,6 +71,7 @@ export default function JokesRoute() {
           {data.user ? (
             <div className="user-info">
               <span>{`Hi ${data.user.username}`}</span>
+              <UserSelect />
               <Form action="/logout" method="post">
                 <button type="submit" className="button">
                   Logout
@@ -56,26 +85,6 @@ export default function JokesRoute() {
       </header>
       <main className="jokes-main">
         <div className="container">
-          <div className="jokes-list">
-            <Link to=".">Get a random joke</Link>
-            <p>Here are a few more jokes to check out:</p>
-            <ul>
-              {data.jokeListItems.length > 0 ? (
-                data.jokeListItems.map(({ id, name }) => (
-                  <li key={id}>
-                    <Link prefetch="intent" to={id}>
-                      {name}
-                    </Link>
-                  </li>
-                ))
-              ) : (
-                <li>No jokes found</li>
-              )}
-            </ul>
-            <Link to="new" className="button">
-              Add your own
-            </Link>
-          </div>
           <div className="jokes-outlet">
             <Outlet />
           </div>
@@ -89,5 +98,40 @@ export default function JokesRoute() {
         </div>
       </footer>
     </div>
+  );
+}
+
+function UserSelect()
+{
+  const data = useLoaderData<typeof loader>();
+  const [selectedUserId, setSelectedUserId] = useState(data.user?.id);
+  const navigation = useNavigate();
+
+  function changeUser(userId: string)
+  {
+    setSelectedUserId(userId);
+    navigation(userId);
+  }
+
+  function isSelf(userId: string)
+  {
+    return data.user?.id === userId;
+  }
+
+  return (
+    <select
+      className="user-select"
+      value={selectedUserId}
+      onChange={(e) => changeUser(e.target.value)}
+    >
+      <option key={data.user?.id} value={data.user?.id} className="user-select-option">
+        {"Me😄"}
+      </option>
+      {data.users.map((user) => (isSelf(user.id) ? null :
+          <option key={user.id} value={user.id} className="user-select-option">
+            {user.username}
+          </option>
+      ))}
+    </select>
   );
 }

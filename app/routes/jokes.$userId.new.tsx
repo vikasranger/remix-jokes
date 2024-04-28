@@ -34,7 +34,7 @@ function validateJokeName(name: string) {
   }
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({request }: ActionArgs) => {
   const userId = await requireUserId(request);
   const form = await request.formData();
   const content = form.get("content");
@@ -63,7 +63,7 @@ export const action = async ({ request }: ActionArgs) => {
   const joke = await db.joke.create({
     data: { ...fields, jokesterId: userId },
   });
-  return redirect(`/jokes/${joke.id}`);
+  return redirect(`/jokes/${userId}/${joke.id}`);
 };
 
 export default function NewJokeRoute() {
