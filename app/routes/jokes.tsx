@@ -1,10 +1,7 @@
-import type {LinksFunction, LoaderArgs} from "@remix-run/node";
+import type {LinksFunction, LoaderFunctionArgs} from "@remix-run/node";
 import {json} from "@remix-run/node";
-import {useParams} from "@remix-run/react";
-import {useNavigate} from "@remix-run/react";
-import {Form, Link, Outlet, useLoaderData} from "@remix-run/react";
-import {useEffect} from "react";
-import {useState} from "react";
+import {Form, Link, Outlet, useLoaderData, useNavigate, useParams} from "@remix-run/react";
+import {useEffect, useState} from "react";
 
 import stylesUrl from "~/styles/jokes.css";
 import {db} from "~/utils/db.server";
@@ -19,7 +16,7 @@ export const links: LinksFunction = () => [
 
 export const loader = async({
   request
-}: LoaderArgs) =>
+}: LoaderFunctionArgs) =>
 {
   const user = await getUser(request);
   const users = await db.user.findMany();
@@ -41,7 +38,7 @@ export const loader = async({
     users
   });
 };
-      
+
 export default function JokesRoute()
 {
   const data = useLoaderData<typeof loader>();

@@ -1,20 +1,16 @@
-import type {
-  ActionArgs,
-  LinksFunction,
-  V2_MetaFunction,
-} from "@remix-run/node";
-import { Form, Link, useActionData, useSearchParams } from "@remix-run/react";
+import type {ActionFunctionArgs, LinksFunction, MetaFunction} from "@remix-run/node";
+import {Form, Link, useActionData, useSearchParams} from "@remix-run/react";
 
 import stylesUrl from "~/styles/login.css";
-import { db } from "~/utils/db.server";
-import { badRequest } from "~/utils/request.server";
-import { createUserSession, login, register } from "~/utils/session.server";
+import {db} from "~/utils/db.server";
+import {badRequest} from "~/utils/request.server";
+import {createUserSession, login, register} from "~/utils/session.server";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesUrl },
 ];
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   const description = "Login to submit your own jokes to Remix Jokes!";
 
   return [
@@ -44,7 +40,7 @@ function validateUrl(url: string) {
   return "/jokes";
 }
 
-export const action = async ({ request }: ActionArgs) => {
+export const action = async ({ request }: ActionFunctionArgs) => {
   const form = await request.formData();
   const loginType = form.get("loginType");
   const password = form.get("password");

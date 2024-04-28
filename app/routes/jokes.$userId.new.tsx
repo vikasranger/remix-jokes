@@ -1,89 +1,103 @@
-import type { ActionArgs, LoaderArgs } from "@remix-run/node";
-import { json, redirect } from "@remix-run/node";
-import {
-  Form,
-  isRouteErrorResponse,
-  Link,
-  useActionData,
-  useNavigation,
-  useRouteError,
-} from "@remix-run/react";
+import type {ActionFunctionArgs, LoaderFunctionArgs} from "@remix-run/node";
+import {json, redirect} from "@remix-run/node";
+import {Form, isRouteErrorResponse, Link, useActionData, useNavigation, useRouteError} from "@remix-run/react";
 
-import { JokeDisplay } from "~/components/joke";
-import { db } from "~/utils/db.server";
-import { badRequest } from "~/utils/request.server";
-import { getUserId, requireUserId } from "~/utils/session.server";
+import {JokeDisplay} from "~/components/joke";
+import {db} from "~/utils/db.server";
+import {badRequest} from "~/utils/request.server";
+import {getUserId, requireUserId} from "~/utils/session.server";
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async({request}: LoaderFunctionArgs) =>
+{
   const userId = await getUserId(request);
-  if (!userId) {
-    throw new Response("Unauthorized", { status: 401 });
+  if(!userId)
+  {
+    throw new Response("Unauthorized", {status: 401});
   }
   return json({});
 };
 
-function validateJokeContent(content: string) {
-  if (content.length < 10) {
+function validateJokeContent(content: string)
+{
+  if(content.length < 10)
+  {
     return "That joke is too short";
   }
 }
 
-function validateJokeName(name: string) {
-  if (name.length < 3) {
+function validateJokeName(name: string)
+{
+  if(name.length < 3)
+  {
     return "That joke's name is too short";
   }
 }
 
-export const action = async ({request }: ActionArgs) => {
+export const action = async({request}: ActionFunctionArgs) =>
+{
   const userId = await requireUserId(request);
   const form = await request.formData();
   const content = form.get("content");
   const name = form.get("name");
-  if (typeof content !== "string" || typeof name !== "string") {
+  if(typeof content !== "string" || typeof name !== "string")
+  {
     return badRequest({
       fieldErrors: null,
       fields: null,
-      formError: "Form not submitted correctly.",
+      formError: "Form not submitted correctly."
     });
   }
 
   const fieldErrors = {
     content: validateJokeContent(content),
-    name: validateJokeName(name),
+    name: validateJokeName(name)
   };
-  const fields = { content, name };
-  if (Object.values(fieldErrors).some(Boolean)) {
+  const fields = {
+    content,
+    name
+  };
+  if(Object.values(fieldErrors).some(Boolean))
+  {
     return badRequest({
       fieldErrors,
       fields,
-      formError: null,
+      formError: null
     });
   }
 
   const joke = await db.joke.create({
-    data: { ...fields, jokesterId: userId },
+    data: {
+      ...fields,
+      jokesterId: userId
+    }
   });
   return redirect(`/jokes/${userId}/${joke.id}`);
 };
 
-export default function NewJokeRoute() {
+export default function NewJokeRoute()
+{
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
 
-  if (navigation.formData) {
+  if(navigation.formData)
+  {
     const content = navigation.formData.get("content");
     const name = navigation.formData.get("name");
-    if (
+    if(
       typeof content === "string" &&
       typeof name === "string" &&
       !validateJokeContent(content) &&
       !validateJokeName(name)
-    ) {
+    )
+    {
       return (
         <JokeDisplay
           canDelete={false}
           isOwner={true}
-          joke={{ name, content }}
+          joke={{
+            name,
+            content
+          }}
         />
       );
     }
@@ -149,11 +163,13 @@ export default function NewJokeRoute() {
   );
 }
 
-export function ErrorBoundary() {
+export function ErrorBoundary()
+{
   const error = useRouteError();
   console.error(error);
 
-  if (isRouteErrorResponse(error) && error.status === 401) {
+  if(isRouteErrorResponse(error) && error.status === 401)
+  {
     return (
       <div className="error-container">
         <p>You must be logged in to create a joke.</p>

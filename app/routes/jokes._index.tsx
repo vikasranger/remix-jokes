@@ -1,10 +1,10 @@
-import type {LoaderArgs} from "@remix-run/node";
+import type {LoaderFunctionArgs} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {requireUserId} from "~/utils/session.server";
 
 export const loader = async({
   request
-}: LoaderArgs) =>
+}: LoaderFunctionArgs) =>
 {
   const logInUserId = await requireUserId(request);
   if(!logInUserId)

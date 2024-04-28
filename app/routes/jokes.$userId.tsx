@@ -1,4 +1,4 @@
-import type {LinksFunction, LoaderArgs} from "@remix-run/node";
+import type {LinksFunction, LoaderFunctionArgs} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {Outlet, useLoaderData} from "@remix-run/react";
 import JokesList from "~/components/jokesList";
@@ -17,7 +17,7 @@ export const links: LinksFunction = () => [
 export const loader = async({
   params,
   request
-}: LoaderArgs) =>
+}: LoaderFunctionArgs) =>
 {
   const user = await getUser(request);
   console.log("params", params);

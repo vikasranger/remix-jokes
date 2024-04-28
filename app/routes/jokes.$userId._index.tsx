@@ -1,4 +1,4 @@
-import type {LoaderArgs} from "@remix-run/node";
+import type {LoaderFunctionArgs} from "@remix-run/node";
 import {json} from "@remix-run/node";
 import {isRouteErrorResponse, Link, useLoaderData, useRouteError} from "@remix-run/react";
 
@@ -8,7 +8,7 @@ import {requireUserId} from "~/utils/session.server";
 export const loader = async({
   params,
   request
-}: LoaderArgs) =>
+}: LoaderFunctionArgs) =>
 {
 
   const userId = params.userId;

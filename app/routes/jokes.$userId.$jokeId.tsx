@@ -1,4 +1,4 @@
-import type {ActionArgs, LoaderArgs, V2_MetaFunction} from "@remix-run/node";
+import type {ActionFunctionArgs, LoaderFunctionArgs, MetaFunction} from "@remix-run/node";
 import {json, redirect} from "@remix-run/node";
 import {isRouteErrorResponse, useLoaderData, useParams, useRouteError} from "@remix-run/react";
 
@@ -6,8 +6,8 @@ import {JokeDisplay} from "~/components/joke";
 import {db} from "~/utils/db.server";
 import {getUserId, requireUserId} from "~/utils/session.server";
 
-export const meta: V2_MetaFunction<typeof loader> = ({data}) =>
-{     
+export const meta: MetaFunction<typeof loader> = ({data}) =>
+{
   const {
     description,
     title
@@ -37,7 +37,7 @@ export const meta: V2_MetaFunction<typeof loader> = ({data}) =>
 export const loader = async({
   params,
   request
-}: LoaderArgs) =>
+}: LoaderFunctionArgs) =>
 {
   const userId = await getUserId(request);
   console.log("joke param", params);
@@ -57,7 +57,7 @@ export const loader = async({
 export const action = async({
   params,
   request
-}: ActionArgs) =>
+}: ActionFunctionArgs) =>
 {
   const form = await request.formData();
   const paramUserId = params.userId;

@@ -1,14 +1,6 @@
-import type { LinksFunction, V2_MetaFunction } from "@remix-run/node";
-import {
-  isRouteErrorResponse,
-  Links,
-  LiveReload,
-  Meta,
-  Outlet,
-  Scripts,
-  useRouteError,
-} from "@remix-run/react";
-import type { PropsWithChildren } from "react";
+import type {LinksFunction, MetaFunction} from "@remix-run/node";
+import {isRouteErrorResponse, Links, LiveReload, Meta, Outlet, Scripts, useRouteError} from "@remix-run/react";
+import type {PropsWithChildren} from "react";
 
 import globalLargeStylesUrl from "~/styles/global-large.css";
 import globalMediumStylesUrl from "~/styles/global-medium.css";
@@ -28,7 +20,7 @@ export const links: LinksFunction = () => [
   },
 ];
 
-export const meta: V2_MetaFunction = () => {
+export const meta: MetaFunction = () => {
   const description = "Learn Remix and laugh at the same time!";
 
   return [

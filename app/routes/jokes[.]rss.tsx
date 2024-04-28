@@ -1,7 +1,7 @@
-import type { LoaderArgs } from "@remix-run/node";
+import type {LoaderFunctionArgs} from "@remix-run/node";
 
-import { db } from "~/utils/db.server";
-import { getUserId } from "~/utils/session.server";
+import {db} from "~/utils/db.server";
+import {getUserId} from "~/utils/session.server";
 
 function escapeCdata(s: string) {
   return s.replace(/\]\]>/g, "]]]]><![CDATA[>");
@@ -16,7 +16,7 @@ function escapeHtml(s: string) {
     .replace(/'/g, "&#039;");
 }
 
-export const loader = async ({ request }: LoaderArgs) => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
 
   // In the official deployed version of the app, we don't want to deploy
