@@ -80,8 +80,8 @@ export default function JokesRoute()
         </div>
       </header>
       <main className="jokes-main">
-          <div className="jokes-outlet">
-            <Outlet />
+        <div className="jokes-outlet">
+          <Outlet />
         </div>
       </main>
       <footer className="jokes-footer">
@@ -118,11 +118,13 @@ function UserSelect()
       value={selectedUserId}
       onChange={(e) => changeUser(e.target.value)}
     >
-      <option key={data.user?.id} value={data.user?.id} className="user-select-option">
-        {"Me😄"}
+      <option key={data.user?.id} value={data.user?.id}>
+        {"Me🚀"}
       </option>
-      {data.users.map((user) => (isSelf(user.id) ? null :
-          <option key={user.id} value={user.id} className="user-select-option">
+      {data.users.map((user) => (
+        isSelf(user.id) ?
+          null :
+          <option key={user.id} value={user.id}>
             {user.username}
           </option>
       ))}
