@@ -13,11 +13,11 @@ export default function JokesList(props: {
     <div className="jokes-list">
       <Link to=".">Get a random joke</Link>
       {showAdd &&
-        <><p>or</p>
+        <div className="button-wrapper">
           <Link to="new" className="button">
             Add your own
           </Link>
-        </>
+        </div>
       }
       <p>Here are a few more jokes to check out:</p>
       <ul>

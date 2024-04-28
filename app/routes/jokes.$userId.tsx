@@ -13,18 +13,15 @@ export const links: LinksFunction = () => [
     href: stylesUrl
   }
 ];
-           
+
 export const loader = async({
   params,
   request
 }: LoaderFunctionArgs) =>
 {
   const user = await getUser(request);
-  console.log("params", params);
   const paramUserId = params.userId;
 
-  // In the official deployed version of the app, we don't want to deploy
-  // a site with none-moderated content, so we only show users their own jokes
   const jokeListItems = user
     ? await db.joke.findMany({
       orderBy: {createdAt: "desc"},
@@ -46,11 +43,12 @@ export const loader = async({
 export default function JokesUserRoute()
 {
   const data = useLoaderData<typeof loader>();
-  console.log("user data", data);
 
   return (
-    <div className="jokeList-container">
-      <JokesList jokeListItems={data.jokeListItems} showAdd={data.self}/>
+    <div className="container">
+      {data.jokeListItems.length > 0 &&
+        <JokesList jokeListItems={data.jokeListItems} showAdd={data.self} />
+      }
       <div className="jokes-outlet">
         <Outlet />
       </div>

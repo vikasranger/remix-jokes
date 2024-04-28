@@ -81,10 +81,8 @@ export default function JokesRoute()
         </div>
       </header>
       <main className="jokes-main">
-        <div className="container">
           <div className="jokes-outlet">
             <Outlet />
-          </div>
         </div>
       </main>
       <footer className="jokes-footer">
