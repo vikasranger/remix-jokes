@@ -21,10 +21,20 @@ This is a Remix.js application for managing and sharing jokes. Users can log in,
 ## Getting Started
 
 From your terminal:
+<br/>
+skip this step if prisma is not installed.
+```sh
+npm install -g prisma
+
+npx prisma generate
+```
+### Do this
 
 ```sh
 npm install
+
 npx prisma migrate dev
+
 npm run dev
 ```
 
