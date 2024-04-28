@@ -40,7 +40,6 @@ export const loader = async({
 }: LoaderFunctionArgs) =>
 {
   const userId = await getUserId(request);
-  console.log("joke param", params);
   const joke = await db.joke.findUnique({
     where: {id: params.jokeId}
   });
