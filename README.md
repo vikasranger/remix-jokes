@@ -1,34 +1,24 @@
-# Remix Jokes!
+---
+title: Remix Jokes App
+---
 
-So great, it's funny!
+# Remix Jokes App
 
-Production deploy here: https://remix-jokes.lol
+This is a Remix.js application for managing and sharing jokes. Users can log in, view their own jokes, add new jokes, and view jokes shared by other users. In this updated version, we have added the ability for users to select a specific user from the database whose jokes they want to view.
 
-Tutorial here: https://rmx.as/jokes
+## Features
 
-This example demonstrates some basic features of Remix, including:
+- **User Authentication**: Users can log in to the application to access their own jokes.
 
-- Generating a new Remix project
-- Conventional files
-- Routes (including the nested variety ✨)
-- Styling
-- Database interactions (via `sqlite` and `prisma`)
-- Mutations
-- Validation
-- Authentication
-- Error handling: Both unexpected (the dev made a whoopsies) and expected (the end-user made a whoopsies) errors
-- SEO with Meta Tags
-- JavaScript...
-- Resource Routes
-- Deployment
+- **Select User**: Users can now select a specific user from the database whose jokes they want to view. This feature allows users to switch between different users and see their respective jokes.
 
-This is the finished version of [the tutorial](https://remix.run/tutorials/jokes).
+- **Display User List**: The application displays a list of all users fetched from the Prisma database at the initial jokes page login. This list is shown in the app header, allowing users to easily switch between users.
 
-> For comparison, a variant of this sample app using [EdgeDB](https://www.edgedb.com) instead of SQLite/Prisma is [available here](https://github.com/edgedb/edgedb-examples/tree/main/remix).
+- **Dynamic Jokes Rendering**: As the user selects a different user from the list, the application dynamically fetches the jokes list for the selected user from the database and renders them on the jokes page. This ensures that users can easily view jokes from different users without navigating away from the page.
 
-- [Remix Docs](https://remix.run/docs)
+- **Updated Types Import**: All types imports have been updated to use the latest types from the Remix library, ensuring compatibility and consistency throughout the application.
 
-## Development
+## Getting Started
 
 From your terminal:
 
@@ -63,5 +53,3 @@ npm start
 ## Preview
 
 Open this example on [CodeSandbox](https://codesandbox.com):
-
-[![Open in CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/remix-run/examples/tree/main/_official-jokes)
