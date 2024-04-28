@@ -59,7 +59,3 @@ Then run the app in production mode:
 ```sh
 npm start
 ```
-
-## Preview
-
-Open this example on [CodeSandbox](https://codesandbox.com):
